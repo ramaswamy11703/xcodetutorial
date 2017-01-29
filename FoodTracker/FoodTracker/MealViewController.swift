@@ -7,22 +7,52 @@
 //
 
 import UIKit
+import os.log
 
-class MealViewController: UIViewController, UITextFieldDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate {
+
+class MealViewController: UIViewController, UITextFieldDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate,
+    UIGestureRecognizerDelegate {
     
     //MARK: properties
     
     @IBOutlet weak var nameTextField: UITextField!
     @IBOutlet weak var photoImageView: UIImageView!
-    @IBOutlet weak var ratingControl: UIStackView!
+    
+    @IBOutlet weak var ratingControl: RatingControl!
+    @IBOutlet weak var saveButton: UIBarButtonItem!
+    
+    /*
+     This value is either passed by `MealTableViewController` in `prepare(for:sender:)`
+     or constructed as part of adding a new meal.
+     */
+    var meal: Meal?
+    
     
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view, typically from a nib.
         nameTextField.delegate = self
+        
+        let tapGR = UITapGestureRecognizer(target: ratingControl, action: #selector(RatingControl.doubleTap(_:)))
+        tapGR.delegate = ratingControl
+        tapGR.numberOfTapsRequired = 2
+        self.view.addGestureRecognizer(tapGR)
+        
+        // let tapGR2 = UITapGestureRecognizer(target: nameTextField, action: #selector(self.imageDoubleTap(_:)))
+        // tapGR2.numberOfTapsRequired = 2
+        //tapGR2.delegate = self
+        //self.view.addGestureRecognizer(tapGR2)
+        
+        //nameTextField.delegate = self
+
+        updateSaveButtonState()
     }
     
     //MARK: UITextFieldDelegate
+    func textFieldDidBeginEditing(_ textField: UITextField) {
+        // disable save button
+        saveButton.isEnabled = false
+    }
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         // Hide the keyboard
         textField.resignFirstResponder()
@@ -30,10 +60,41 @@ class MealViewController: UIViewController, UITextFieldDelegate, UIImagePickerCo
     }
     
     func textFieldDidEndEditing(_ textField: UITextField){
+        updateSaveButtonState()
+        navigationItem.title = textField.text
+    }
+    
+    
+    
+    //MARK: Navigation
+    
+    @IBAction func cancel(_ sender: UIBarButtonItem) {
+        dismiss(animated: true, completion: nil)
+    }
+    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        super.prepare(for: segue, sender: sender)
+        // configure the destination view controller only when the save button is pressed
+        guard let button = sender as? UIBarButtonItem, button == saveButton else {
+            os_log("The save button was not pressed, cancelling", log: OSLog.default,
+                   type: .debug)
+            return
+        }
+        let name = nameTextField.text ?? ""
+        let photo = photoImageView.image
+        let rating = ratingControl.rating
+        
+        // create meal to be passed to `MealTableViewController`
+        meal = Meal(name: name, photo: photo, rating: rating)
         
     }
+    
     //MARK: Actions
-
+    
+    @IBAction func imageDoubleTap(_ sender: UITapGestureRecognizer){
+        print("double tapped on image selector, eh?")
+    }
+    
     @IBAction func selectImageFromPhotoLibrary(_ sender: UITapGestureRecognizer) {
         // Hide the keyboard
         nameTextField.resignFirstResponder()
@@ -63,6 +124,12 @@ class MealViewController: UIViewController, UITextFieldDelegate, UIImagePickerCo
         }
         photoImageView.image = selectedImage
         dismiss(animated: true, completion: nil)
+    }
+    
+    //MARK: Private Methods
+    private func updateSaveButtonState() {
+        let text = nameTextField.text ?? ""
+        saveButton.isEnabled = !text.isEmpty
     }
 }
 

@@ -9,7 +9,7 @@
 import UIKit
 
 @IBDesignable
-class RatingControl: UIStackView {
+class RatingControl: UIStackView, UIGestureRecognizerDelegate {
     //MARK: Properties
     private var ratingButtons = [UIButton]()
     
@@ -31,6 +31,9 @@ class RatingControl: UIStackView {
         }
     }
     
+    
+    
+    
     //MARK: Initialization
     override
     init(frame: CGRect) {
@@ -43,7 +46,7 @@ class RatingControl: UIStackView {
         super.init(coder: coder)
         setupButtons()
     }
-
+    
     private func setupButtons() {
         // clear any existing buttons
         for button in ratingButtons {
@@ -88,12 +91,18 @@ class RatingControl: UIStackView {
         updateButtonSelectionStates()
     }
     
+    
     func updateButtonSelectionStates() {
         for (index, button) in ratingButtons.enumerated() {
             button.isSelected = index < rating
         }
     }
     //MARK: actions
+    
+    func doubleTap(_ sender: UITapGestureRecognizer) {
+        self.rating = 5
+    }
+
     func ratingButtonTapped(button: UIButton) {
         guard let index = ratingButtons.index(of: button) else {
             fatalError("The button \(button) is not in the ratingButtons array: \(ratingButtons)")
