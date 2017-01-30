@@ -11,6 +11,7 @@ import UIKit
 class MealTableViewController: UITableViewController {
 
     
+    
     // MARK: properties
     var meals = [Meal]()
     
@@ -64,7 +65,17 @@ class MealTableViewController: UITableViewController {
             as? MealTableViewCell else {
             fatalError("Was not able to convert cell to MealTableViewCell")
         }
+        
+        let tapGR = UITapGestureRecognizer(target: cell, action: #selector(MealTableViewCell.singleTap(_:)))
+        tapGR.numberOfTapsRequired = 1
+        cell.addGestureRecognizer(tapGR)
 
+        let tapGR2 = UITapGestureRecognizer(target: cell, action: #selector(MealTableViewCell.doubleTap(_:)))
+        tapGR2.numberOfTapsRequired = 2
+        cell.addGestureRecognizer(tapGR2)
+        
+        tapGR.require(toFail: tapGR2)
+        
         // Configure the cell...
         let meal = meals[indexPath.row]
         

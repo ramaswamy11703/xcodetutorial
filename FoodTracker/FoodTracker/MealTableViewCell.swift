@@ -25,5 +25,13 @@ class MealTableViewCell: UITableViewCell {
 
         // Configure the view for the selected state
     }
+    
+    func singleTap(_ sender: UITapGestureRecognizer) {
+        print("single tap")
+    }
+    
+    func doubleTap(_ sender: UITapGestureRecognizer) {
+        print("double tap")
+    }
 
 }
