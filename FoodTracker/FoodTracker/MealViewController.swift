@@ -34,16 +34,8 @@ class MealViewController: UIViewController, UITextFieldDelegate, UIImagePickerCo
         nameTextField.delegate = self
         
         let tapGR = UITapGestureRecognizer(target: ratingControl, action: #selector(RatingControl.doubleTap(_:)))
-        tapGR.delegate = ratingControl
         tapGR.numberOfTapsRequired = 2
-        self.view.addGestureRecognizer(tapGR)
-        
-        // let tapGR2 = UITapGestureRecognizer(target: nameTextField, action: #selector(self.imageDoubleTap(_:)))
-        // tapGR2.numberOfTapsRequired = 2
-        //tapGR2.delegate = self
-        //self.view.addGestureRecognizer(tapGR2)
-        
-        //nameTextField.delegate = self
+        ratingControl.addGestureRecognizer(tapGR)
 
         updateSaveButtonState()
     }
