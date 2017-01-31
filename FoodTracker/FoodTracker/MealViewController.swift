@@ -33,12 +33,17 @@ class MealViewController: UIViewController, UITextFieldDelegate, UIImagePickerCo
         // Do any additional setup after loading the view, typically from a nib.
         nameTextField.delegate = self
         
-        let tapGR = UITapGestureRecognizer(target: ratingControl, action: #selector(RatingControl.doubleTap(_:)))
+        // let tapGR = UITapGestureRecognizer(target: ratingControl, action: #selector(RatingControl.doubleTap(_:)))
+        // tapGR.numberOfTapsRequired = 2
+        // ratingControl.addGestureRecognizer(tapGR)
+
+        let tapGR = UITapGestureRecognizer(target: self, action: #selector(MealViewController.doubleTap(_:)))
         tapGR.numberOfTapsRequired = 2
         ratingControl.addGestureRecognizer(tapGR)
 
         updateSaveButtonState()
     }
+    
     
     //MARK: UITextFieldDelegate
     func textFieldDidBeginEditing(_ textField: UITextField) {
@@ -59,6 +64,10 @@ class MealViewController: UIViewController, UITextFieldDelegate, UIImagePickerCo
     
     
     //MARK: Navigation
+    
+    func doubleTap(_ sender: UITapGestureRecognizer) {
+        ratingControl.rating = 5
+    }
     
     @IBAction func cancel(_ sender: UIBarButtonItem) {
         dismiss(animated: true, completion: nil)
@@ -101,6 +110,8 @@ class MealViewController: UIViewController, UITextFieldDelegate, UIImagePickerCo
         
         present(imagePickerController, animated: true, completion: nil)
     }
+    
+
     
     //MARK: UIImagePickerControllerDelegate
     func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {

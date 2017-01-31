@@ -40,6 +40,14 @@ class MealTableViewController: UITableViewController {
         // load sample meals
         loadSampleMeals()
 
+        let tapGR = UITapGestureRecognizer(target: self, action: #selector(MealTableViewController.singleTap(_:)))
+        self.view.addGestureRecognizer(tapGR)
+        let tapGR2 = UITapGestureRecognizer(target: self, action:#selector(MealTableViewController.doubleTap(_:)))
+        tapGR2.numberOfTapsRequired = 2
+        tapGR.require(toFail: tapGR2)
+        self.view.addGestureRecognizer(tapGR2)
+        
+        
     }
 
     override func didReceiveMemoryWarning() {
@@ -66,15 +74,15 @@ class MealTableViewController: UITableViewController {
             fatalError("Was not able to convert cell to MealTableViewCell")
         }
         
-        let tapGR = UITapGestureRecognizer(target: cell, action: #selector(MealTableViewCell.singleTap(_:)))
-        tapGR.numberOfTapsRequired = 1
-        cell.addGestureRecognizer(tapGR)
-
-        let tapGR2 = UITapGestureRecognizer(target: cell, action: #selector(MealTableViewCell.doubleTap(_:)))
-        tapGR2.numberOfTapsRequired = 2
-        cell.addGestureRecognizer(tapGR2)
-        
-        tapGR.require(toFail: tapGR2)
+//        let tapGR = UITapGestureRecognizer(target: cell, action: #selector(MealTableViewCell.singleTap(_:)))
+//        tapGR.numberOfTapsRequired = 1
+//        cell.addGestureRecognizer(tapGR)
+//
+//        let tapGR2 = UITapGestureRecognizer(target: cell, action: #selector(MealTableViewCell.doubleTap(_:)))
+//        tapGR2.numberOfTapsRequired = 2
+//        cell.addGestureRecognizer(tapGR2)
+//        
+//        tapGR.require(toFail: tapGR2)
         
         // Configure the cell...
         let meal = meals[indexPath.row]
@@ -96,6 +104,29 @@ class MealTableViewController: UITableViewController {
             tableView.insertRows(at: [newIndexPath], with: .automatic)
             
         }
+    }
+    
+    func singleTap(_ gesture: UITapGestureRecognizer) {
+        print("single tap")
+        guard let tableView = self.view as! UITableView? else {
+            fatalError("expected uitableview")
+        }
+        
+        let point : CGPoint = gesture.location(in: tableView)
+        let selectedIndexPath: IndexPath = tableView.indexPathForRow(at: point)!
+        let selectedRow : UITableViewCell = tableView.cellForRow(at: selectedIndexPath)!
+    }
+    
+    func doubleTap(_ sender: UITapGestureRecognizer) {
+        print("double tap")
+        guard let tableView = self.view as! UITableView? else {
+            fatalError("expected uitableview")
+        }
+        
+        let point : CGPoint = sender.location(in: tableView)
+        let selectedIndexPath: IndexPath = tableView.indexPathForRow(at: point)!
+        let selectedRow : UITableViewCell = tableView.cellForRow(at: selectedIndexPath)!
+        
     }
     /*
     // Override to support conditional editing of the table view.
