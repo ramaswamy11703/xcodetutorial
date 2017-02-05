@@ -32,15 +32,17 @@ class MealViewController: UIViewController, UITextFieldDelegate, UIImagePickerCo
         super.viewDidLoad()
         // Do any additional setup after loading the view, typically from a nib.
         nameTextField.delegate = self
-        
-        // let tapGR = UITapGestureRecognizer(target: ratingControl, action: #selector(RatingControl.doubleTap(_:)))
-        // tapGR.numberOfTapsRequired = 2
-        // ratingControl.addGestureRecognizer(tapGR)
 
         let tapGR = UITapGestureRecognizer(target: self, action: #selector(MealViewController.doubleTap(_:)))
         tapGR.numberOfTapsRequired = 2
         ratingControl.addGestureRecognizer(tapGR)
 
+        if let m = self.meal {
+            navigationItem.title = m.name
+            nameTextField.text = m.name
+            ratingControl.rating = m.rating
+            photoImageView.image = meal?.photo
+        }
         updateSaveButtonState()
     }
     
@@ -70,7 +72,13 @@ class MealViewController: UIViewController, UITextFieldDelegate, UIImagePickerCo
     }
     
     @IBAction func cancel(_ sender: UIBarButtonItem) {
-        dismiss(animated: true, completion: nil)
+        // push (for add) or modal (for edit?). Feels very hacky
+        let isPush = self.presentingViewController is UINavigationController
+        if (isPush) {
+            dismiss(animated: true, completion: nil)
+        } else {
+            navigationController?.popViewController(animated: true)
+        }
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {

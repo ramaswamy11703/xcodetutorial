@@ -24,7 +24,7 @@
                                 <rect key="frame" x="0.0" y="28" width="375" height="90"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="BuI-GF-QQo" id="lOw-UB-mw4">
-                                    <rect key="frame" x="0.0" y="0.0" width="375" height="89"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="375" height="89.5"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
                                         <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="defaultPhoto" translatesAutoresizingMaskIntoConstraints="NO" id="AwZ-zY-Ymp">
@@ -48,6 +48,7 @@
                                     <outlet property="myNameLabel" destination="k4E-4h-I7f" id="QFh-vy-3wy"/>
                                     <outlet property="photoImageView" destination="AwZ-zY-Ymp" id="Rm1-ag-9IV"/>
                                     <outlet property="ratingControl" destination="M3E-O2-Uwi" id="hAV-7U-VGk"/>
+                                    <segue destination="BYZ-38-t0r" kind="show" identifier="ShowDetail" id="XD3-gJ-qa4"/>
                                 </connections>
                             </tableViewCell>
                         </prototypes>
@@ -59,7 +60,7 @@
                     <navigationItem key="navigationItem" title="Your Meals" id="JII-WT-c4j">
                         <barButtonItem key="rightBarButtonItem" systemItem="add" id="jbx-bf-5hG">
                             <connections>
-                                <segue destination="5cd-6g-QG2" kind="presentation" id="YJg-6b-4bB"/>
+                                <segue destination="5cd-6g-QG2" kind="presentation" identifier="AddItem" id="YJg-6b-4bB"/>
                             </connections>
                         </barButtonItem>
                     </navigationItem>
@@ -177,10 +178,13 @@
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dP3-TR-DtH" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1056.8" y="122.78860569715144"/>
+            <point key="canvasLocation" x="1156" y="524"/>
         </scene>
     </scenes>
     <resources>
         <image name="defaultPhoto" width="540" height="540"/>
     </resources>
+    <inferredMetricsTieBreakers>
+        <segue reference="bpb-hp-VtL"/>
+    </inferredMetricsTieBreakers>
 </document>
